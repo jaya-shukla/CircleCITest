@@ -15,6 +15,9 @@ jobs:
             pip install -r requirements.txt
             pip install allure-pytest
             playwright install
+            sudo apt-get update
+            sudo apt-get install -y wget gnupg
+            sudo npx playwright install-deps
             wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
             tar -xvzf allure-2.24.0.tgz
             export PATH=$PATH:$(pwd)/allure-2.24.0/bin
