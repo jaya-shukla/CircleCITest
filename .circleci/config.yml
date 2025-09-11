@@ -14,14 +14,13 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
             pip install allure-pytest
-            playwright install
             
             # Install Node.js and npm
             sudo apt-get update
             sudo apt-get install -y curl
             curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
             sudo apt-get install -y nodejs
-            
+            npx playwright install
             # Install Playwright system dependencies
             sudo npx playwright install-deps
             
