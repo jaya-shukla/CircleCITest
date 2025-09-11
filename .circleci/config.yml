@@ -1,0 +1,35 @@
+
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pip install allure-pytest
+            playwright install
+            wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
+            tar -xvzf allure-2.24.0.tgz
+            export PATH=$PATH:$(pwd)/allure-2.24.0/bin
+      - run:
+          name: Run tests with Allure
+          command: |
+            . venv/bin/activate
+            pytest --alluredir=allure-results
+            allure generate allure-results --clean -o allure-report
+      - store_artifacts:
+          path: allure-report
+          destination: allure-report
+
+workflows:
+  version: 2
+  test-workflow:
+    jobs:
+      - test
