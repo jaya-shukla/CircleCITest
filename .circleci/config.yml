@@ -17,10 +17,16 @@ jobs:
             playwright install-deps
 
       - run:
+          name: Set PYTHONPATH
+          command: |
+            echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $BASH_ENV
+            source $BASH_ENV
+
+      - run:
           name: Run tests and generate HTML report
           command: |
             . venv/bin/activate
-            pytest
+            pytest --html=report.html
 
       - store_artifacts:
           path: report.html
