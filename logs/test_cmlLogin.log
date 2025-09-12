@@ -1,0 +1,3 @@
+2025-09-12 18:01:21,994 - test_cmlLogin - INFO - Navigating to CML login page
+2025-09-12 18:01:28,317 - test_cmlLogin - INFO - Accepting cookie banner
+2025-09-12 18:01:28,447 - test_cmlLogin - INFO - Checking EGD title in page title
