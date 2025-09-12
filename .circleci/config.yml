@@ -1,45 +1,48 @@
-
 version: 2.1
 
-jobs:
-  test:
-    docker:
-      - image: cimg/python:3.10
+commands:
+  setup-python:
     steps:
       - checkout
       - run:
-          name: Install dependencies
+          name: Set up Python and dependencies
           command: |
             python -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
             playwright install
             playwright install-deps
-#            pip install allure-pytest
-            
-            # Install Node.js and npm
-#            sudo apt-get update
-#            sudo apt-get install -y curl
-#            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-#            sudo apt-get install -y nodejs
-#            npx playwright install
-#            # Install Playwright system dependencies
-#            sudo npx playwright install-deps
-            
-            # Install Allure CLI
-#            wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
-#            tar -xvzf allure-2.24.0.tgz
-#            export PATH=$PATH:$(pwd)/allure-2.24.0/bin
 
+  setup-allure:
+    steps:
       - run:
-          name: Run tests with Allure
+          name: Install Allure CLI
+          command: |
+            wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
+            tar -xvzf allure-2.24.0.tgz
+            echo 'export PATH=$PATH:$(pwd)/allure-2.24.0/bin' >> $BASH_ENV
+            source $BASH_ENV
+
+  run-tests:
+    steps:
+      - run:
+          name: Run tests and generate Allure report
           command: |
             . venv/bin/activate
             pytest
-#            allure generate allure-results --clean -o allure-report
-#      - store_artifacts:
-#          path: allure-report
-#          destination: allure-report
+            allure generate allure-results --clean -o allure-report
+
+jobs:
+  test:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - setup-python
+      - setup-allure
+      - run-tests
+      - store_artifacts:
+          path: allure-report
+          destination: allure-report
 
 workflows:
   version: 2
