@@ -16,12 +16,15 @@ commands:
   setup-allure:
     steps:
       - run:
-          name: Install Allure CLI
+          name: Install Java and Allure CLI
           command: |
+            sudo apt-get update
+            sudo apt-get install -y default-jre
             wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
             tar -xvzf allure-2.24.0.tgz
             echo 'export PATH=$PATH:$(pwd)/allure-2.24.0/bin' >> $BASH_ENV
             source $BASH_ENV
+  
 
   run-tests:
     steps:
