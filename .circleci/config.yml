@@ -20,7 +20,7 @@ jobs:
           name: Run tests and generate HTML report
           command: |
             . venv/bin/activate
-            pytest --html=report.html
+            pytest
 
       - store_artifacts:
           path: report.html
