@@ -28,6 +28,9 @@ jobs:
             . venv/bin/activate
              pytest --html=report.html --self-contained-html
 
+      - store_artifacts:
+          path: screenshots
+          destination: screenshots
 
       - store_artifacts:
           path: report.html
